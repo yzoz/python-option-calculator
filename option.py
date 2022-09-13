@@ -27,7 +27,6 @@ class Calculation():
         else:
             return K * self.cdf(-self.d2(S, K, V, T)) - S * self.cdf(-self.d1(S, K, V, T))
 
-
     def delta(self, S, K, V, T, dT):
         if dT == 'C':
             delta = self.cdf(self.d1(S, K, V, T))
@@ -226,24 +225,21 @@ class Calculation():
 
 calc = Calculation()
 
-deep = 2
 
-acc = 0.0001
+'''deep = 2
 
-exp = 15 / god
+exp = 30 / god
 
-fPrice = 55
+fPrice = 21000
 
-volaShift = 0/100
-
-exp2 = 12
-exp3 = 9
+exp2 = 15 / god
+exp3 = 5 / god
 
 params = []
 
 dType = 'F'
-quant = 4
-price = 55.36
+quant = 1
+price = 20000
 strike = 0
 vola = 0
 params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
@@ -251,30 +247,30 @@ params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike,
 dType = 'C'
 quant = 10
 price = 1.31
-strike = 56
-vola = 27.25/100 + volaShift
+strike = 25000
+vola = 27.25
 params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
 
 dType = 'P'
 quant = 8
 price = 1.24
 strike = 56
-vola = 27.25/100 + volaShift
+vola = 27.25
 params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
 
 dType = 'P'
 quant = 5
 price = 0.82
 strike = 55
-vola = 27.7/100 + volaShift
+vola = 27.7
 params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
 
 bePriceS = fPrice - deep
-bePriceF = fPrice + deep
+bePriceF = fPrice + deep'''
 
-calc.plotPL(bePriceS, bePriceF, params, exp)
-calc.plotPL(bePriceS, bePriceF, params, exp2/god)
-calc.plotPL(bePriceS, bePriceF, params, exp3/god)
+'''calc.plotPL(bePriceS, bePriceF, params, exp)
+calc.plotPL(bePriceS, bePriceF, params, exp2)
+calc.plotPL(bePriceS, bePriceF, params, exp3)
 plt.ylabel("P/L")
 plt.xlabel("Price")
 plt.title("Option")
@@ -283,8 +279,8 @@ plt.legend()
 plt.show()
 
 calc.plotDelta(bePriceS, bePriceF, params, exp)
-calc.plotDelta(bePriceS, bePriceF, params, exp2/god)
-calc.plotDelta(bePriceS, bePriceF, params, exp3/god)
+calc.plotDelta(bePriceS, bePriceF, params, exp2)
+calc.plotDelta(bePriceS, bePriceF, params, exp3)
 plt.xlabel("Price")
 plt.title("Option")
 plt.grid(True)
@@ -331,9 +327,11 @@ print('T:\t', round(calc.thetaFull(fPrice, params, exp), 2))
 
 print('G:\t', round(calc.gammaFull(fPrice, params, exp), 2))
 
-print('P/L:\t', calc.p_l(fPrice, params, exp))
+print('P/L:\t', calc.p_l(fPrice, params, exp))'''
 
-#Donee
+
+"""
+acc = 0.0001
 
 dType = 'F'
 strike = 0
@@ -377,20 +375,25 @@ quant = 3
 vola = 0
 paramD3 = {'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp}
 
-
-
-
-'''calc.searchDelta(fPrice, deep, acc, paramD1, params)
+calc.searchDelta(fPrice, deep, acc, paramD1, params)
 calc.searchDelta(fPrice, deep, acc, paramD_1, params)
 calc.searchDelta(fPrice, deep, acc, paramD2, params)
 calc.searchDelta(fPrice, deep, acc, paramD_2, params)
 calc.searchDelta(fPrice, deep, acc, paramD3, params)
 calc.searchDelta(fPrice, deep, acc, paramD_3, params)
+"""
 
-S = 54
-K = 53
-V = 0.35
-T = 3
-dT = "P"'''
 
-#print('One: ', round(calc.theo(S, K, V, T/god, dT), 2))
+#Bitcon example
+
+S = 21000 #Underlying (price now)
+K = 30000 #Strike
+V = 0.75 #Implied Volatility (1 / 100%)
+T = 30 / god #Expiration date (days from now / 365)
+dT = "C" #Call / Put
+
+print('Theo: ', round(calc.theo(S, K, V, T, dT), 2))
+print('Delta: ', round(calc.delta(S, K, V, T, dT), 2))
+print('Theta: ', round(calc.theta(S, K, V, T), 2))
+print('Vega: ', round(calc.vega(S, K, V, T), 2))
+print('Gamma: ', round(calc.gamma(S, K, V, T), 2))
