@@ -1,5 +1,4 @@
 import math
-import scipy.stats
 import matplotlib.pyplot as plt
 
 global god
@@ -10,6 +9,12 @@ step = 0.01
 
 class Calculation():
 
+    def pdf(self, x):
+        return math.exp(-x**2/2) / math.sqrt(2*math.pi)
+
+    def cdf(self, x):
+        return (1 + math.erf(x / math.sqrt(2))) / 2
+
     def d1(self, S, K, V, T):
         return (math.log(S / float(K)) + (V**2 / 2) * T) / (V * math.sqrt(T))
 
@@ -18,30 +23,30 @@ class Calculation():
 
     def theo(self, S, K, V, T, dT):
         if dT == 'C':
-            return S * scipy.stats.norm.cdf(self.d1(S, K, V, T)) - K * scipy.stats.norm.cdf(self.d2(S, K, V, T))
+            return S * self.cdf(self.d1(S, K, V, T)) - K * self.cdf(self.d2(S, K, V, T))
         else:
-            return K * scipy.stats.norm.cdf(-self.d2(S, K, V, T)) - S * scipy.stats.norm.cdf(-self.d1(S, K, V, T))
+            return K * self.cdf(-self.d2(S, K, V, T)) - S * self.cdf(-self.d1(S, K, V, T))
 
 
     def delta(self, S, K, V, T, dT):
         if dT == 'C':
-            delta = scipy.stats.norm.cdf(self.d1(S, K, V, T))
+            delta = self.cdf(self.d1(S, K, V, T))
         elif dT == 'P':
-            delta = scipy.stats.norm.cdf(self.d1(S, K, V, T)) - 1
+            delta = self.cdf(self.d1(S, K, V, T)) - 1
         else:
             delta = 1
         return delta
 
     def vega(self, S, K, V, T):
-        vega = (S * math.sqrt(T) * scipy.stats.norm.pdf(self.d1(S, K, V, T))) / 100
+        vega = (S * math.sqrt(T) * self.pdf(self.d1(S, K, V, T))) / 100
         return vega
 
     def theta(self, S, K, V, T):
-        theta = -((S * V * scipy.stats.norm.pdf(self.d1(S, K, V, T))) / (2 * math.sqrt(T))) / god
+        theta = -((S * V * self.pdf(self.d1(S, K, V, T))) / (2 * math.sqrt(T))) / god
         return theta
 
     def gamma(self, S, K, V, T):
-        gamma = scipy.stats.norm.pdf(self.d1(S, K, V, T))/(S * V * math.sqrt(T))
+        gamma = self.pdf(self.d1(S, K, V, T))/(S * V * math.sqrt(T))
         return gamma
 
 
@@ -375,7 +380,7 @@ paramD3 = {'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vo
 
 
 
-calc.searchDelta(fPrice, deep, acc, paramD1, params)
+'''calc.searchDelta(fPrice, deep, acc, paramD1, params)
 calc.searchDelta(fPrice, deep, acc, paramD_1, params)
 calc.searchDelta(fPrice, deep, acc, paramD2, params)
 calc.searchDelta(fPrice, deep, acc, paramD_2, params)
@@ -386,6 +391,6 @@ S = 54
 K = 53
 V = 0.35
 T = 3
-dT = "P"
+dT = "P"'''
 
 #print('One: ', round(calc.theo(S, K, V, T/god, dT), 2))
