@@ -1,5 +1,6 @@
-from plot import Plot
 import matplotlib.pyplot as plt
+
+from option_calculator import Plot
 
 plot = Plot()
 
@@ -15,33 +16,41 @@ fPrice = 21000
 
 params = []
 
-dType = 'F'
+dType = "F"
 quant = 1
 price = 20000
 strike = 0
 vola = 0
-params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
+params.append(
+    {"dType": dType, "price": price, "quant": quant, "strike": strike, "vola": vola, "exp": exp}
+)
 
-dType = 'C'
+dType = "C"
 quant = 1
 price = 500
 strike = 25000
 vola = 0.75
-params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
+params.append(
+    {"dType": dType, "price": price, "quant": quant, "strike": strike, "vola": vola, "exp": exp}
+)
 
-dType = 'P'
+dType = "P"
 quant = 1
 price = 100
 strike = 15000
 vola = 0.75
-params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
+params.append(
+    {"dType": dType, "price": price, "quant": quant, "strike": strike, "vola": vola, "exp": exp}
+)
 
-dType = 'P'
+dType = "P"
 quant = -1
 price = 25
 strike = 10000
 vola = 1.5
-params.append({'dType': dType, 'price': price, 'quant': quant, 'strike': strike, 'vola': vola, 'exp': exp})
+params.append(
+    {"dType": dType, "price": price, "quant": quant, "strike": strike, "vola": vola, "exp": exp}
+)
 
 bePriceS = fPrice - deep
 bePriceF = fPrice + deep
@@ -96,13 +105,12 @@ plt.legend()
 plt.ylabel("Gamma")
 plt.show()
 
+print("D:\t", round(plot.deltaFull(fPrice, params, exp), 2))
 
-print('D:\t', round(plot.deltaFull(fPrice, params, exp), 2))
+print("V:\t", round(plot.vegaFull(fPrice, params, exp), 2))
 
-print('V:\t', round(plot.vegaFull(fPrice, params, exp), 2))
+print("T:\t", round(plot.thetaFull(fPrice, params, exp), 2))
 
-print('T:\t', round(plot.thetaFull(fPrice, params, exp), 2))
+print("G:\t", round(plot.gammaFull(fPrice, params, exp), 2))
 
-print('G:\t', round(plot.gammaFull(fPrice, params, exp), 2))
-
-print('P/L:\t', plot.p_l(fPrice, params, exp))
+print("P/L:\t", plot.p_l(fPrice, params, exp))
