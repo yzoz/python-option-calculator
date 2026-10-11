@@ -9,12 +9,25 @@ delta (i.e. the combined delta is ~0). All calculations are delegated to a
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
-from typing import Any, Union
+from typing import Any, TypedDict, Union
 
+from .bsm import OptionType
 from .position import OptionPosition
 from .pricing import Pricing
 
 PositionLike = Union[OptionPosition, Mapping[str, Any]]
+
+
+class SearchRow(TypedDict):
+    """A single delta-neutral price level found by :meth:`Search.searchDelta`."""
+
+    price: float
+    dType: OptionType
+    strike: float
+    quant: float
+    delta: float
+    delta_portfolio: float
+    theo: float
 
 
 class Search:
@@ -34,7 +47,7 @@ class Search:
         eps: float = 1e-4,
         exp: float | None = None,
         r: float = 0.0,
-    ) -> list[dict[str, float]]:
+    ) -> list[SearchRow]:
         """Return price levels where the target and portfolio deltas cancel out.
 
         Parameters
@@ -59,7 +72,7 @@ class Search:
 
         Returns:
         -------
-        list[dict]
+        list[SearchRow]
             One row per distinct matching level, with keys ``price``,
             ``dType``, ``strike``, ``quant``, ``delta``, ``delta_portfolio``,
             ``theo``.
@@ -71,7 +84,7 @@ class Search:
         quant = read(paramD, "quant")
         effective_exp = exp if exp is not None else read(paramD, "exp")
 
-        rows: list[dict[str, float]] = []
+        rows: list[SearchRow] = []
         for price in Pricing.price_range(fPrice - price_range, fPrice + price_range, step):
             target_delta = (
                 self.pricing.bsm.delta(price, strike, vola, effective_exp, d_type, r) * quant
@@ -98,7 +111,7 @@ class Search:
                 )
 
         # Keep only the first level of each run of equal target deltas.
-        unique: list[dict[str, float]] = []
+        unique: list[SearchRow] = []
         for row in rows:
             if not unique or unique[-1]["delta"] != row["delta"]:
                 unique.append(row)
