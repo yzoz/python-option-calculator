@@ -2,9 +2,16 @@
 
 # Vanilla Option Calculator
 
+[![PyPI](https://img.shields.io/pypi/v/option-calculator.svg)](https://pypi.org/project/option-calculator/)
+[![PyPI - Python versions](https://img.shields.io/pypi/pyversions/option-calculator.svg)](https://pypi.org/project/option-calculator/)
+[![CI](https://github.com/yzoz/python-option-calculator/actions/workflows/ci.yml/badge.svg)](https://github.com/yzoz/python-option-calculator/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/yzoz/python-option-calculator/blob/master/LICENSE)
+
 **Black-Scholes-Merton** pricing and greeks for vanilla options, written in **pure
 Python** — no NumPy, no SciPy, no other numerical dependencies. The only external
 dependency is `matplotlib`, and only for the optional plotting layer.
+
+Available on **PyPI**: [`option-calculator`](https://pypi.org/project/option-calculator/).
 
 - Theoretical price and greeks: **Theo, Delta, Theta, Vega, Gamma**
 - Portfolio aggregation and mark-to-market **P&L** across many positions
@@ -13,6 +20,15 @@ dependency is `matplotlib`, and only for the optional plotting layer.
 - Optional risk-free rate `r` (defaults to `0`, the rates-free crypto convention)
 
 ## Installation
+
+From **PyPI**:
+
+```bash
+pip install option-calculator            # core only (standard library)
+pip install "option-calculator[plot]"    # + matplotlib for the plotting layer
+```
+
+From source:
 
 ```bash
 pip install .            # core only (standard library)
