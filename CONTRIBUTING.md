@@ -37,7 +37,43 @@ All three must pass. CI runs the same checks across Python 3.9–3.12.
 4. Commit: `Release vX.Y.Z`.
 5. Tag and push:
    ```bash
-   git tag vX.Y.Z
+   git tag -a vX.Y.Z -m "Release vX.Y.Z"
    git push origin master --tags
    ```
-6. (Optional) Build and publish: `python -m build` then `twine upload dist/*`.
+6. Pushing a `v*` tag triggers the **Release** workflow
+   (`.github/workflows/release.yml`), which builds the distributions and
+   publishes them to PyPI via [Trusted Publishing](https://docs.pypi.org/trusted-publishers/).
+7. (Optional) Create a GitHub Release from the tag and paste the matching
+   `CHANGELOG.md` section as the description.
+
+### PyPI publishing
+
+Publishing uses Trusted Publishing (OIDC) — no API tokens or repository
+secrets are required. One-time setup:
+
+1. Register the project on PyPI and add a **pending publisher** at
+   <https://pypi.org/manage/account/publishing/> matching:
+   - PyPI Project Name: `option-calculator`
+   - Owner: `yzoz`
+   - Repository name: `python-option-calculator`
+   - Workflow name: `release.yml`
+   - Environment name: `pypi`
+2. Push a `v*` tag (step 5 above). The `publish` job runs in the `pypi`
+   environment and uploads `dist/` via `pypa/gh-action-pypi-publish`.
+
+To publish an existing version (for example after workflow-only changes)
+without moving a tag, run the workflow manually:
+
+```bash
+gh workflow run release.yml        # or: Actions → Release → Run workflow
+```
+
+> A version can only be uploaded to PyPI once. After a successful upload,
+> bump the version before publishing again.
+
+### Manual build (local check)
+
+```bash
+python -m build          # produces dist/*.whl and dist/*.tar.gz
+twine check dist/*       # validate metadata before publishing
+```
