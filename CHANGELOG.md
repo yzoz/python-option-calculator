@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-10-11
+
 ### Added
+- First packaged release: Black-Scholes-Merton core, portfolio aggregation,
+  plotting layer and delta-neutral search.
 - Packaged the project as an installable `src/`-layout package (`option_calculator`)
   with `pyproject.toml`, optional `[plot]` (matplotlib) and `[dev]` extras.
 - `OptionPosition` dataclass with field validation.
@@ -31,12 +35,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Consistent `dType` handling across all methods (unknown types now raise instead
   of silently producing wrong results).
 - Correct discounted intrinsic value for expired / zero-volatility options.
-
-## [0.1.0] - 2026-10-11
-
-### Added
-- First packaged release: Black-Scholes-Merton core, portfolio aggregation,
-  plotting layer and delta-neutral search.
 
 [Unreleased]: https://github.com/yzoz/python-option-calculator/compare/v0.1.0...HEAD
 [0.1.0]: https://github.com/yzoz/python-option-calculator/releases/tag/v0.1.0
